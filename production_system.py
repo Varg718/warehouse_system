@@ -36,8 +36,25 @@ class Warehouse:
             print(f"Product cannot be found.")
             return None
 
+    def update_product(self, product):
+        """Update product in warehouse"""
+        if product.name not in self.products:
+            print("The product is not in magazine.")
+            return None
+        else:
+            self.products[product.name] = (product.price, product.stock)
+            print("Product updated successfully.")
+            return product
+
+    def sort_products(self):
+        """Sort products in warehouse"""
+        self.products = dict(sorted(self.products.items()))
+        print("Products sorted successfully.")
+        return self.products
+
     def __str__(self):
-        return "\n".join(str(product) for product in self.products)
+        products_str = [str(product) for product in self.products.values()]
+        return "\n".join(products_str)
 
 if __name__ == "__main__":
     warehouse = Warehouse()
@@ -47,7 +64,10 @@ if __name__ == "__main__":
         print("2. Remove product")
         print("3. Listing products")
         print("4. Search product")
-        print("5. Exit")
+        print("5. Sort products")
+        print("6. Update product")
+        print("7. Exit")
+        print("")
 
         choice = input("Enter your choice: ")
 
@@ -74,7 +94,24 @@ if __name__ == "__main__":
             if product:
                 print(product)
         elif choice == "5":
+            warehouse.sort_products()
+            print(warehouse)
+            print("Products sorted successfully.")
+        elif choice == "6":
+            name = input("Enter product name: ")
+            product = warehouse.search_product(name)
+            if not product:
+                print("The product is not in magazine.")
+                continue
+            price = float(input("Enter product price: "))
+            stock = int(input("Enter product stock: "))
+            product.price = price
+            product.stock = stock
+            warehouse.update_product(product)
+            print("Product updated successfully.")
+
+        elif choice == "7":
             break
         else:
-            print("Invalid choice, please choose one from 1 to 5.")
+            print("Invalid choice, please choose one from 1 to 7.")
             continue
